@@ -1,0 +1,29 @@
+*.iml
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+# Gradle files
+build/
+.gradle/
+*/build/
+captures/
+local.properties
+
+# IDEA
+.idea
+/.idea
+
+# Built application files
+*.apk
+*.ap_
+
+# Files for the Dalvik VM
+*.dex
+
+# Log Files
+*.log
