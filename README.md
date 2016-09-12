@@ -1,1 +1,1 @@
-# AdsSplashActivity
+# 仿网易新闻启动页广告效果。
