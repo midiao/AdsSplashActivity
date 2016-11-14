@@ -16,9 +16,6 @@ import com.squareup.picasso.Picasso;
 import java.lang.ref.WeakReference;
 
 public class SplashActivity extends Activity {
-
-    private static final int time = 3000;
-
     private ImageView bgIv;
     private ImageView adIv;
     private DonutProgress skipRpb;
@@ -26,6 +23,10 @@ public class SplashActivity extends Activity {
     private static final Uri picURI = Uri.parse(picURL);
     private static Handler mHandler = new Handler();
     private static final int MSG_PROGRESS_UPDATE = 0x110;
+    // 广告页总时长
+    private static final int ADVERTISE_TIME = 2000;
+    // Progress更新时长
+    private static final int PROGRESS_UPDATE_TIME = 40;
 
     class MyHandler extends Handler {
         WeakReference<Activity> weakReference;
@@ -38,13 +39,12 @@ public class SplashActivity extends Activity {
         public void handleMessage(Message msg) {
             final Activity activity = weakReference.get();
             if (activity != null) {
-                int roundProgress = skipRpb.getProgress();
-                roundProgress += 100 / 60;
-                skipRpb.setProgress(++roundProgress);
-                if (roundProgress >= 100) {
+                skipRpb.setProgress(skipRpb.getProgress() + 100 / (ADVERTISE_TIME / PROGRESS_UPDATE_TIME));
+                this.sendEmptyMessageDelayed(MSG_PROGRESS_UPDATE, PROGRESS_UPDATE_TIME);
+                if (skipRpb.getProgress() == 100) {
                     this.removeMessages(MSG_PROGRESS_UPDATE);
+                    startMainActivity();
                 }
-                this.sendEmptyMessageDelayed(MSG_PROGRESS_UPDATE, 50);
             }
         }
     }
@@ -71,12 +71,6 @@ public class SplashActivity extends Activity {
 
                 }
             });
-            mHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    startMainActivity();
-                }
-            }, time);
         }
     };
 
@@ -87,7 +81,7 @@ public class SplashActivity extends Activity {
         bgIv = (ImageView) findViewById(R.id.bg_iv);
         adIv = (ImageView) findViewById(R.id.ad_iv);
         skipRpb = (DonutProgress) findViewById(R.id.skip_rpb);
-        mHandler.postDelayed(showAdPic, time);
+        mHandler.postDelayed(showAdPic, ADVERTISE_TIME);
     }
 
     private void startMainActivity() {
